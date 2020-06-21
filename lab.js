@@ -1,10 +1,11 @@
 /* eslint-disable no-undef, no-unused-vars */
 
-let numBalls = 10;
+let numBalls = 0;
 let spring = 0;
 let gravity = 1;
 let balls = [];
 let up;
+let iter = 10000;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -24,8 +25,11 @@ function draw() {
   background(0);
   textSize(100);
   text('Lab', width/2-100, height/2-100);
+  textSize(10);
+  text('Endless game', width/2-10, height/2-90);
   textSize(20);
   text(`Gravity : ${gravity.toFixed(1)}`,30,30);
+  text(`Cycle : ${iter}`,30,60);
   fill(0, 102, 153);
   balls.forEach(ball => {
     ball.collide();
@@ -66,6 +70,9 @@ class Ball {
 
         this.diameter+=1
         this.others[i].diameter-=1
+        if(iter<=0){
+          this.others[i].color[3]--
+        }
       }
     }
   }
@@ -102,6 +109,7 @@ class Ball {
         up = false
       }
       up ? gravity-=0.1 : gravity+=0.1
+      iter--
     }
   }
 
