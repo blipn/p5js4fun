@@ -21,7 +21,7 @@ function draw() {
     rect(cx+i*6+i,cy+i*6+i,6,-(6+i*60))
     rect(cx+i*6+i+200,cy+i*6+i,6,(6+i*50))
   }
-  fill(grey)
+  fill(1/deltaTime*3000,10,10)
 
   noStroke()
   ellipse(cx+100,cy,100)
@@ -29,8 +29,8 @@ function draw() {
   
 
   textSize(200)
-  text('Lab', width/2-180, height/2-100)
+  text('Lab', cx-60, height/2-100)
   textSize(40)
-  text('Endless Game', width/2-170, height/2-50)
-  fill(blue)
+  text('Endless Game', width/2-80, height/2-50)
+  fill(0,1/deltaTime*2000,1/deltaTime*3000)
 }
