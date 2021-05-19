@@ -52,6 +52,23 @@ loginForm.onsubmit = (event) => {
         settings[item.name] = item.value
       }
   })
+
+  const client = new tmi.Client({
+    channels: [ settings.user_login ]
+  })
+  client.connect()
+  client.on('message', (channel, tags, message, self) => {
+    console.log(tags)
+    console.log(`${tags['display-name']}: ${message}`)
+    if(message === '!more') {
+      popOne()
+    } else if(message === '!less') {
+      removeOne()
+    } else {
+      reflect += 10
+    }
+  })
+
   run(settings, (chan)=>{
     output.innerText = `${chan.user_name} : ${chan.viewer_count}`
     console.log(chan)
