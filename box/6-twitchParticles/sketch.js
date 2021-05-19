@@ -19,9 +19,9 @@ function draw() {
     mover.show();
     attractors.forEach(a => a.attract(mover))
   }
-  if (mouseIsPressed) {
-    attractors[1] = new Attractor(mouseX, mouseY, 2)
-  }
+  // if (mouseIsPressed) {
+  //   attractors[1] = new Attractor(mouseX, mouseY, 2)
+  // }
   attractors.forEach(a => a.show())
 }
 
