@@ -31,12 +31,12 @@ function popOne() {
   let y = random(height/2.2, height/1.8);
   let m = random(0.1, 1);
   movers.push(new Mover(x, y, m));
-  reflect = movers.length / 5
+  reflect = (movers.length + 10) / 5
 }
 
 function removeOne() {
   movers.splice(0,1)
-  reflect = movers.length / 5
+  reflect = (movers.length + 2) / 5
 }
 
 const loginForm = document.getElementById('login')
