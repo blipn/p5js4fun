@@ -5,7 +5,7 @@ const maxMovers = 1000
 
 function setup() {
   createCanvas(windowWidth, windowHeight)
-  attractors.push(new Attractor(width / 2, height / 2, 10))
+  attractors.push(new Attractor(width / 2, height / 2, 6))
   for (let i = 0; i < 1; i++) {
     popOne()
   }
@@ -13,7 +13,7 @@ function setup() {
 }
 
 function draw() {
-  background(0,0,0,reflect)
+  background(1,1,1,reflect)
   for (let mover of movers) {
     mover.update()
     mover.show()
@@ -22,7 +22,7 @@ function draw() {
   if (mouseIsPressed) {
     attractors[1] = new Attractor(mouseX, mouseY, 2)
   }
-  attractors.forEach(a => a.show())
+  // attractors.forEach(a => a.show())
 }
 
 function popOne(mass, color) {
@@ -31,12 +31,12 @@ function popOne(mass, color) {
   let y = random(height/2.2, height/1.8)
   let m = mass || random(0.1, 1)
   movers.push(new Mover(x, y, m, color))
-  reflect = (movers.length + 10) / 10
+  reflect = (movers.length + 50) / 10
 }
 
 function removeOne() {
   movers.splice(0,1)
-  reflect = (movers.length + 2) / 10
+  reflect = (movers.length + 50) / 10
 }
 
 const loginForm = document.getElementById('login')
@@ -71,7 +71,7 @@ function chat(settings) {
   client.on('message', (channel, tags, message, self) => {
     console.log(tags)
     console.log(`${tags['display-name']}: ${message}`)
-    popOne(random(0.2, 2), tags['color'])
+    popOne(random(0.2, 1), tags['color'])
 
     textSize(10)
     fill(tags['color'] || 'white')
