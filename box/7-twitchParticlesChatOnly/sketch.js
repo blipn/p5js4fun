@@ -1,6 +1,8 @@
 let movers = []
 let attractors = []
 let alpha = 0
+let style = 1
+let defaultMsgColor = 'grey'
 const maxMovers = 1000
 
 function setup() {
@@ -13,15 +15,15 @@ function setup() {
 }
 
 function draw() {
-  if(alpha < 255) {alpha += 0.1}
-  background(1,1,1,alpha)
+  if(alpha < 255) {alpha += 0.002 * (movers.length)}
+  if(style){background(0,0,0,alpha)}else{background(255,255,255,alpha)}
   for (let mover of movers) {
     mover.update()
     mover.show()
     attractors.forEach(a => a.attract(mover))
   }
   if (mouseIsPressed) {
-    attractors[1] = new Attractor(mouseX, mouseY, 2)
+    attractors[1] = new Attractor(mouseX, mouseY, 6)
   }
   // attractors.forEach(a => a.show())
 }
@@ -32,7 +34,7 @@ function popOne(mass, color) {
   let y = random(height/2.2, height/1.8)
   let m = mass || random(0.1, 1)
   movers.push(new Mover(x, y, m, color))
-  alpha =  255 / (movers.length * 100) 
+  alpha =  255 / (movers.length * 50) 
 }
 
 function removeOne() {
@@ -71,10 +73,10 @@ function chat(settings) {
   client.on('message', (channel, tags, message, self) => {
     console.log(tags)
     console.log(`${tags['display-name']}: ${message}`)
-    popOne(random(0.2, 1), tags['color'])
+    popOne(random(0.1, 1), tags['color'])
 
     textSize(10)
-    fill(tags['color'] || 'white')
+    fill(tags['color'] || defaultMsgColor)
     text(`${tags['display-name']}: ${message}`, random(100, width/1.5), random(10, height-100))
 
     setTimeout(()=>{
