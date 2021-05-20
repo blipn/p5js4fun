@@ -55,6 +55,14 @@ loginForm.onsubmit = (event) => {
   chat(settings)
 }
 
+//Query params
+const params = new URLSearchParams(location.search)
+const chan = params.get('chan')
+if(chan) {
+  loginForm.style.display = 'none'
+  chat({user_login: chan})
+}
+
 function chat(settings) {
   const client = new tmi.Client({
     channels: [ settings.user_login ]
