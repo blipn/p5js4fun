@@ -1,10 +1,32 @@
 let movers = []
 let attractors = []
 let alpha = 0
-let style = 1
 let defaultMsgColor = 'grey'
 const maxMovers = 1000
 
+// Settings (ex: ?chan=someone&size=20&bg=255)
+let bgColor = 0 // background greyscale (0-255) - ?bg
+let size = 12 // message size - ?size
+let max = 1 // max particle size - ?max
+let min = 0.1 // min particle size - ?min
+
+// Elements
+const loginForm = document.getElementById('login')
+const output = document.getElementById('output')
+
+// Query params
+const params = new URLSearchParams(location.search)
+bgColor = parseInt(params.get('bg')) || bgColor
+size = parseInt(params.get('size')) || size
+max = parseInt(params.get('max')) || max
+min = parseInt(params.get('min')) || min
+const chan = params.get('chan')
+if(chan) {
+  loginForm.style.display = 'none'
+  chat({user_login: chan})
+}
+
+// Functions
 function setup() {
   createCanvas(windowWidth, windowHeight)
   attractors.push(new Attractor(width / 2, height / 2, 6))
@@ -16,7 +38,7 @@ function setup() {
 
 function draw() {
   if(alpha < 255) {alpha += 0.002 * (movers.length)}
-  if(style){background(0,0,0,alpha)}else{background(255,255,255,alpha)}
+  background(bgColor,alpha)
   for (let mover of movers) {
     mover.update()
     mover.show()
@@ -32,7 +54,7 @@ function popOne(mass, color) {
   if(movers.length >= maxMovers) return
   let x = random(width/2.2, width/1.8)
   let y = random(height/2.2, height/1.8)
-  let m = mass || random(0.1, 1)
+  let m = mass || random(min, max)
   movers.push(new Mover(x, y, m, color))
   alpha =  255 / (movers.length * 50) 
 }
@@ -40,9 +62,6 @@ function popOne(mass, color) {
 function removeOne() {
   movers.splice(0,1)
 }
-
-const loginForm = document.getElementById('login')
-const output = document.getElementById('output')
 loginForm.onsubmit = (event) => {
   event.preventDefault()
   const inputs = loginForm.elements
@@ -57,14 +76,6 @@ loginForm.onsubmit = (event) => {
   chat(settings)
 }
 
-//Query params
-const params = new URLSearchParams(location.search)
-const chan = params.get('chan')
-if(chan) {
-  loginForm.style.display = 'none'
-  chat({user_login: chan})
-}
-
 function chat(settings) {
   const client = new tmi.Client({
     channels: [ settings.user_login ]
@@ -73,11 +84,11 @@ function chat(settings) {
   client.on('message', (channel, tags, message, self) => {
     console.log(tags)
     console.log(`${tags['display-name']}: ${message}`)
-    popOne(random(0.1, 1), tags['color'])
+    popOne(null, tags['color'])
 
-    textSize(10)
+    textSize(size)
     fill(tags['color'] || defaultMsgColor)
-    text(`${tags['display-name']}: ${message}`, random(100, width/1.5), random(10, height-100))
+    text(`${tags['display-name']}: ${message}`, random(10, width/2), random(10, height-10))
 
     setTimeout(()=>{
       removeOne()
