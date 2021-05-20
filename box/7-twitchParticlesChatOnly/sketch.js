@@ -10,6 +10,7 @@ let max = 1 // max particle size - ?max
 let min = 0.1 // min particle size - ?min
 let timeout = 60 // particle timeout - ?t
 let maxParticles = 1000 // max ammount of particles (+1000 could lag) - ?p
+let aFactor = 10 // alpha factor - ?a
 
 // Elements
 const loginForm = document.getElementById('login')
@@ -23,6 +24,7 @@ max = parseInt(params.get('max')) || max
 min = parseInt(params.get('min')) || min
 timeout = parseInt(params.get('t')) || timeout
 maxParticles = parseInt(params.get('p')) || maxParticles
+aFactor = parseFloat(params.get('a')) || aFactor
 const chan = params.get('chan')
 if(chan) {
   loginForm.style.display = 'none'
@@ -40,7 +42,7 @@ function setup() {
 }
 
 function draw() {
-  if(alpha < 255) {alpha += 0.002 * (particles.length)}
+  if(alpha < 255) {alpha += aFactor / 1000 * (particles.length)}
   background(bgColor,alpha)
   for (let particle of particles) {
     particle.update()
