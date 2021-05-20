@@ -31,12 +31,12 @@ function popOne(mass, color) {
   let y = random(height/2.2, height/1.8)
   let m = mass || random(0.1, 1)
   movers.push(new Mover(x, y, m, color))
-  reflect = (movers.length + 10) / 5
+  reflect = (movers.length + 10) / 10
 }
 
 function removeOne() {
   movers.splice(0,1)
-  reflect = (movers.length + 2) / 5
+  reflect = (movers.length + 2) / 10
 }
 
 const loginForm = document.getElementById('login')
@@ -52,7 +52,10 @@ loginForm.onsubmit = (event) => {
         settings[item.name] = item.value
       }
   })
+  chat(settings)
+}
 
+function chat(settings) {
   const client = new tmi.Client({
     channels: [ settings.user_login ]
   })
@@ -61,6 +64,11 @@ loginForm.onsubmit = (event) => {
     console.log(tags)
     console.log(`${tags['display-name']}: ${message}`)
     popOne(random(0.2, 2), tags['color'])
+
+    textSize(10)
+    fill(tags['color'] || 'white')
+    text(`${tags['display-name']}: ${message}`, random(100, width/1.5), random(10, height-100))
+
     setTimeout(()=>{
       removeOne()
     }, 60000)    
