@@ -10,5 +10,6 @@ html, body {
 }
 canvas {
   display: block;
+  filter: contrast(1.1);
 }
 
