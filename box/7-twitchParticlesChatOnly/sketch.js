@@ -9,6 +9,7 @@ let bgColor = 0 // background greyscale (0-255) - ?bg
 let size = 12 // message size - ?size
 let max = 1 // max particle size - ?max
 let min = 0.1 // min particle size - ?min
+let timeout = 60 // particle timeout - ?t
 
 // Elements
 const loginForm = document.getElementById('login')
@@ -20,6 +21,7 @@ bgColor = parseInt(params.get('bg')) || bgColor
 size = parseInt(params.get('size')) || size
 max = parseInt(params.get('max')) || max
 min = parseInt(params.get('min')) || min
+timeout = parseInt(params.get('t')) || timeout
 const chan = params.get('chan')
 if(chan) {
   loginForm.style.display = 'none'
@@ -92,6 +94,6 @@ function chat(settings) {
 
     setTimeout(()=>{
       removeOne()
-    }, 60000)    
+    }, timeout * 1000)    
   })
 }
