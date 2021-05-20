@@ -1,4 +1,4 @@
-class Mover {
+class Particle {
   constructor(x, y, m, c) {
     this.pos = createVector(x, y);
     this.vel = p5.Vector.random2D();

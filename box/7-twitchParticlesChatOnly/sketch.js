@@ -1,8 +1,7 @@
-let movers = []
+let particles = []
 let attractors = []
 let alpha = 0
 let defaultMsgColor = 'grey'
-const maxMovers = 1000
 
 // Settings (ex: ?chan=someone&size=20&bg=255)
 let bgColor = 0 // background greyscale (0-255) - ?bg
@@ -10,6 +9,7 @@ let size = 12 // message size - ?size
 let max = 1 // max particle size - ?max
 let min = 0.1 // min particle size - ?min
 let timeout = 60 // particle timeout - ?t
+let maxParticles = 1000 // max ammount of particles (+1000 could lag) - ?p
 
 // Elements
 const loginForm = document.getElementById('login')
@@ -22,6 +22,7 @@ size = parseInt(params.get('size')) || size
 max = parseInt(params.get('max')) || max
 min = parseInt(params.get('min')) || min
 timeout = parseInt(params.get('t')) || timeout
+maxParticles = parseInt(params.get('p')) || maxParticles
 const chan = params.get('chan')
 if(chan) {
   loginForm.style.display = 'none'
@@ -39,12 +40,12 @@ function setup() {
 }
 
 function draw() {
-  if(alpha < 255) {alpha += 0.002 * (movers.length)}
+  if(alpha < 255) {alpha += 0.002 * (particles.length)}
   background(bgColor,alpha)
-  for (let mover of movers) {
-    mover.update()
-    mover.show()
-    attractors.forEach(a => a.attract(mover))
+  for (let particle of particles) {
+    particle.update()
+    particle.show()
+    attractors.forEach(a => a.attract(particle))
   }
   if (mouseIsPressed) {
     attractors[1] = new Attractor(mouseX, mouseY, 6)
@@ -53,16 +54,16 @@ function draw() {
 }
 
 function popOne(mass, color) {
-  if(movers.length >= maxMovers) return
+  if(particles.length >= maxParticles) return
   let x = random(width/2.2, width/1.8)
   let y = random(height/2.2, height/1.8)
   let m = mass || random(min, max)
-  movers.push(new Mover(x, y, m, color))
-  alpha =  255 / (movers.length * 50) 
+  particles.push(new Particle(x, y, m, color))
+  alpha =  255 / (particles.length * 50) 
 }
 
 function removeOne() {
-  movers.splice(0,1)
+  particles.splice(0,1)
 }
 loginForm.onsubmit = (event) => {
   event.preventDefault()
