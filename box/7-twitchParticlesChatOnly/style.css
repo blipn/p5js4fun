@@ -1,0 +1,14 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: black;
+  color: bisque;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+canvas {
+  display: block;
+}
+
