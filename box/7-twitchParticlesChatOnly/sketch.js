@@ -1,6 +1,6 @@
 let movers = []
 let attractors = []
-let reflect = 0
+let alpha = 0
 const maxMovers = 1000
 
 function setup() {
@@ -13,7 +13,8 @@ function setup() {
 }
 
 function draw() {
-  background(1,1,1,reflect)
+  if(alpha < 255) {alpha += 0.1}
+  background(1,1,1,alpha)
   for (let mover of movers) {
     mover.update()
     mover.show()
@@ -31,12 +32,11 @@ function popOne(mass, color) {
   let y = random(height/2.2, height/1.8)
   let m = mass || random(0.1, 1)
   movers.push(new Mover(x, y, m, color))
-  reflect = (movers.length + 50) / 10
+  alpha =  255 / (movers.length * 100) 
 }
 
 function removeOne() {
   movers.splice(0,1)
-  reflect = (movers.length + 50) / 10
 }
 
 const loginForm = document.getElementById('login')
