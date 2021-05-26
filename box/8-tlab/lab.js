@@ -124,7 +124,9 @@ class Ball {
         up = false
         level[1]=true
       }
-      up ? gravity-=0.1 : gravity+=0.1
+      if(cycle <= 1) {
+        up ? gravity-=0.1 : gravity+=0.1
+      }
       collides++
     }
   }
