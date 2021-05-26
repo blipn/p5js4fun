@@ -7,6 +7,7 @@ let up
 let collides = 0
 let level = [true]
 let cycle = 0
+let msg = 0
 
 // Query params
 const params = new URLSearchParams(location.search)
@@ -35,9 +36,11 @@ function draw() {
   textSize(10)
   text('Endless game', width/2-10, height/2-90)
   textSize(20)
-  text(`Gravity : ${gravity.toFixed(1)}`,30,30)
-  if(level[1]) text(`Collides : ${collides}`,30,60)
-  if(level[2]) text(`Cycle : ${cycle}`,30,90)
+  text(`Channel : ${chan}`,30,30)
+  text(`Gravity : ${gravity.toFixed(1)}`,30,90)
+  if(level[1]) text(`Collides : ${collides}`,30,120)
+  if(level[2]) text(`Cycle : ${cycle}`,30,150)
+  if(level[3]) text(`Messages : ${msg}`,30,60)
   fill(0, 102, 153)
   balls.forEach(ball => {
     ball.collide()
@@ -57,7 +60,8 @@ class Ball {
     this.others = oin
     this.color = c || [0, 0, 255, 255]
     this.friction = 0.1
-    if(balls.length === 0) {
+    if(level[2] && balls.length <= 10) {
+      level[3] = true
       cycle++
     }
   }
@@ -84,7 +88,7 @@ class Ball {
         if(collides>= 10000){
           level[2]=true
           this.others[i].color[3]--
-          if(this.others[i].color[3] === 0) {
+          if(this.others[i].color[3] <= 20 || this.others[i].diameter <= 0) {
             balls.splice(i, 1)
           }
         }
@@ -126,6 +130,8 @@ class Ball {
       }
       if(cycle <= 1) {
         up ? gravity-=0.1 : gravity+=0.1
+      } else {
+        gravity = 0
       }
       collides++
     }
@@ -158,6 +164,7 @@ function chat(key) {
   })
   client.connect()
   client.on('message', (channel, tags, message, self) => {
+    msg++
     balls.push(new Ball(width/2, height/2, random(30, 70), balls.length, balls, hexToRgb(tags['color'])))
   })
 }
