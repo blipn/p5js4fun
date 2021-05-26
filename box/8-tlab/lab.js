@@ -4,7 +4,7 @@ let spring = 0;
 let gravity = 1;
 let balls = [];
 let up;
-let iter = 10000;
+let collides = 0;
 let level = [true];
 let cycle = 0;
 
@@ -36,7 +36,7 @@ function draw() {
   text('Endless game', width/2-10, height/2-90);
   textSize(20);
   text(`Gravity : ${gravity.toFixed(1)}`,30,30);
-  if(level[1]) text(`Collide : ${iter}`,30,60);
+  if(level[1]) text(`Collides : ${collides}`,30,60);
   if(level[2]) text(`Cycle : ${cycle}`,30,90);
   fill(0, 102, 153);
   balls.forEach(ball => {
@@ -81,7 +81,7 @@ class Ball {
 
         this.diameter+=1
         this.others[i].diameter-=1
-        if(iter<=0){
+        if(collides>= 10000){
           level[2]=true
           this.others[i].color[3]--
           if(this.others[i].color[3] === 0) {
@@ -125,7 +125,7 @@ class Ball {
         level[1]=true
       }
       up ? gravity-=0.1 : gravity+=0.1
-      iter--
+      collides++
     }
   }
 
