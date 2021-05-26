@@ -1,12 +1,12 @@
 /* eslint-disable no-undef, no-unused-vars */
 
-let numBalls = 0;
 let spring = 0;
 let gravity = 1;
 let balls = [];
 let up;
 let iter = 10000;
 let level = [true];
+let cycle = 0;
 
 // Query params
 const params = new URLSearchParams(location.search)
@@ -15,7 +15,7 @@ let size = params.get('size') || 10
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  for (let i = 0; i < numBalls; i++) {
+  for (let i = 0; i < balls.length; i++) {
     balls[i] = new Ball(
       random(10),
       random(10),
@@ -37,7 +37,7 @@ function draw() {
   textSize(20);
   text(`Gravity : ${gravity.toFixed(1)}`,30,30);
   if(level[1]) text(`Collide : ${iter}`,30,60);
-  if(level[2]) text(`Cycle : `,30,90);
+  if(level[2]) text(`Cycle : ${cycle}`,30,90);
   fill(0, 102, 153);
   balls.forEach(ball => {
     ball.collide();
@@ -57,11 +57,13 @@ class Ball {
     this.others = oin;
     this.color = c || [0, 0, 255, 255];
     this.friction = 0.1;
-    numBalls++
+    if(balls.length === 0) {
+      cycle++
+    };
   }
 
   collide() {
-    for (let i = this.id + 1; i < numBalls; i++) {
+    for (let i = this.id + 1; i < balls.length; i++) {
       let dx = this.others[i].x - this.x;
       let dy = this.others[i].y - this.y;
       let distance = sqrt(dx * dx + dy * dy);
@@ -82,6 +84,9 @@ class Ball {
         if(iter<=0){
           level[2]=true
           this.others[i].color[3]--
+          if(this.others[i].color[3] === 0) {
+            balls.splice(i, 1)
+          }
         }
       }
     }
@@ -132,7 +137,7 @@ class Ball {
 
 
 function mousePressed() {
-  balls.push(new Ball(mouseX, mouseY, random(30, 70), numBalls, balls));
+  balls.push(new Ball(mouseX, mouseY, random(30, 70), balls.length, balls));
 }
 
 function hexToRgb(hex) {
@@ -151,6 +156,6 @@ function chat(key) {
   })
   client.connect()
   client.on('message', (channel, tags, message, self) => {
-    balls.push(new Ball(width/2, height/2, random(30, 70), numBalls, balls, hexToRgb(tags['color'])))
+    balls.push(new Ball(width/2, height/2, random(30, 70), balls.length, balls, hexToRgb(tags['color'])))
   })
 }
