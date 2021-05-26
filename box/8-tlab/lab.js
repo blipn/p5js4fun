@@ -135,12 +135,22 @@ function mousePressed() {
   balls.push(new Ball(mouseX, mouseY, random(30, 70), numBalls, balls));
 }
 
+function hexToRgb(hex) {
+  if(!hex) return
+  hex = hex.replace('#', '')
+  const bigint = parseInt(hex, 16)
+  const r = (bigint >> 16) & 255
+  const g = (bigint >> 8) & 255
+  const b = bigint & 255
+  return [r, g, b, 255]
+}
+
 function chat(key) {
   const client = new tmi.Client({
     channels: [ key ]
   })
   client.connect()
   client.on('message', (channel, tags, message, self) => {
-    balls.push(new Ball(width/2, height/2, random(30, 70), numBalls, balls, tags['color']))
+    balls.push(new Ball(width/2, height/2, random(30, 70), numBalls, balls, hexToRgb(tags['color'])))
   })
 }
