@@ -1,14 +1,14 @@
 let movers = [];
 let attractors = [];
-let reflect = 0
+let reflect = 50
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   attractors.push(new Attractor(width / 2, height / 2, 10));
-  for (let i = 0; i < 200; i++) {
-    let x = random(width/2.2, width/1.8);
-    let y = random(height/2.2, height/1.8);
-    let m = random(0.1, 1);
+  for (let i = 0; i < 1000; i++) {
+    let x = random(width/2.0001, width/1.999);
+    let y = random(height/2.0001, height/1.999);
+    let m = random(0.1, 0.2);
     movers[i] = new Mover(x, y, m);
   }
   background(0);
@@ -22,8 +22,7 @@ function draw() {
     attractors.forEach(a => a.attract(mover))
   }
   if (mouseIsPressed) {
-    attractors[1] = new Attractor(mouseX, mouseY, 8)
-    reflect+=0.2
+    attractors[0] = new Attractor(mouseX, mouseY, 10)
   }
-  attractors.forEach(a => a.show())
+  // attractors.forEach(a => a.show())
 }

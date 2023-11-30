@@ -5,11 +5,11 @@ class Mover {
     this.vel.mult(5);
     this.acc = createVector(0, 0);
     this.mass = m;
-    this.r = sqrt(this.mass) * 2;
+    this.r = sqrt(this.mass) * 4;
   }
 
   applyForce(force) {
-    let f = p5.Vector.div(force, this.mass);
+    let f = p5.Vector.div(force, this.mass * 2.5);
     this.acc.add(f);
   }
 
@@ -21,7 +21,7 @@ class Mover {
 
   show() {
     noStroke();
-    fill(this.pos.x/2, this.mass, this.pos.y/2);
+    fill(this.pos.x*360/windowWidth, this.mass*360, this.pos.y*360/windowHeight);
     ellipse(this.pos.x, this.pos.y, this.r * 2);
   }
 }

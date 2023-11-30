@@ -5,4 +5,5 @@ html, body {
 }
 canvas {
   display: block;
+  filter: blur(1px) hue-rotate(300deg) brightness(1.5)
 }
